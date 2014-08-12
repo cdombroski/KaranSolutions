@@ -33,17 +33,26 @@ public class Pi {
 		System.out.println(new Pi(Integer.parseInt(args[0])).getPi());
 	}
 
+	/**
+	 *
+	 * \(\frac {1}{\pi}=12\sum_{k=0}^{\infty}\frac{(-1)^{k}(6k)!(13591409+545140134k)}{(3k)!(k!)^{3}(640320)^{3k+3/2}}\)
+	 * @return
+	 */
 	public BigDecimal getPi() {
 		if (!calculated) {
-			result = result.add(new BigDecimal(BigInteger.valueOf(12).multiply(BigInteger.valueOf(negator)).multiply(term1).multiply(BigInteger.valueOf(13591409).add(term2)))
-					.divide(new BigDecimal(term3.multiply(term4)).multiply(BigDecimal.valueOf(640320).pow(term5 + 1)).multiply(BigDecimal.valueOf(Math.pow(640320, 0.5))), mc));
+			updateResult();
 			for(int x = 0; x < digits / 14; x++) {
 				increment();
 			}
-			result = result.pow(-1, mc);
+			result = result.multiply(BigDecimal.valueOf(12)).pow(-1, mc);
 			calculated = true;
 		}
 		return result;
+	}
+
+	private void updateResult() {
+		result = result.add(new BigDecimal(BigInteger.valueOf(negator).multiply(term1).multiply(BigInteger.valueOf(13591409).add(term2)))
+				.divide(new BigDecimal(term3.multiply(term4)).multiply(BigDecimal.valueOf(640320).pow(term5 + 1)).multiply(BigDecimal.valueOf(Math.pow(640320, 0.5))), mc));
 	}
 
 	private void increment() {
@@ -64,8 +73,7 @@ public class Pi {
 
 		term5 += 3;
 
-		result = result.add(new BigDecimal(BigInteger.valueOf(12).multiply(BigInteger.valueOf(negator)).multiply(term1).multiply(BigInteger.valueOf(13591409).add(term2)))
-				.divide(new BigDecimal(term3.multiply(term4)).multiply(BigDecimal.valueOf(640320).pow(term5 + 1)).multiply(BigDecimal.valueOf(Math.pow(640320, 0.5))), mc));
+		updateResult();
 
 	}
 
